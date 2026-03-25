@@ -1,0 +1,5 @@
+Imported from archive wrapper: /Users/michaelheller/dev/_incoming_repo_ingest_zipbatch/20260325-final-batch/extracted/05-cairnpath-mesh-export-pack-v0-5-1
+Candidate root: /Users/michaelheller/dev/_incoming_repo_ingest_zipbatch/20260325-final-batch/extracted/05-cairnpath-mesh-export-pack-v0-5-1/cairnpath_mesh_bundle_v0_4
+Suggested slug: cairnpath-mesh
+Suggested target: SocioProphet/cairnpath-mesh
+Lane: socioprophet-doctrine

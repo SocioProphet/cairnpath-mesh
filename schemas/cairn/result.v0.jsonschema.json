@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/result.v0.jsonschema.json",
+  "title": "Cairn.Result v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "line_id",
+    "step_id",
+    "frontier",
+    "supporting_refs",
+    "computed_at"
+  ],
+  "properties": {
+    "line_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "step_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "frontier": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "supporting_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "equivalence_map": {
+      "type": "object"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

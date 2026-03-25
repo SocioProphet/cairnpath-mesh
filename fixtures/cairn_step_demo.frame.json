@@ -1,0 +1,58 @@
+{
+  "v": "0",
+  "frame_type": "Execute",
+  "frame_kind": "Cairn.Step",
+  "id": "ERJPCQZCEAH7KETMKFR0YNC5Z9",
+  "ts": "2026-01-11T23:55:00-05:00",
+  "actor": {
+    "kind": "human",
+    "id": "human:alice",
+    "kid": "kid:alice"
+  },
+  "context": {
+    "neighborhood": "nh:alpha",
+    "project": "proj:demo",
+    "branch": "main",
+    "topic": "topic://nh:alpha/cairn"
+  },
+  "policy": {
+    "policy_id": "pol:cairn-default",
+    "policy_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "purpose": "investigation"
+  },
+  "payload_schema": "cairn/step.v0.jsonschema.json",
+  "payload": {
+    "step_id": "cs:demo-0",
+    "line_id": "cl:demo-1",
+    "index": 0,
+    "opcode": "expand",
+    "args": {
+      "dir": "out",
+      "relationship_filter": ":REFERENCES|:SUPPORTS",
+      "uniqueness": "NODE_RECENT",
+      "bfs": true,
+      "cap_k": 50,
+      "lazy": true
+    },
+    "in_context_id": "cx:demo-1",
+    "out_context_id": "cx:demo-2",
+    "metrics": {
+      "fanout": 1200,
+      "dedup_ratio": 0.65,
+      "cap_hit": true,
+      "elapsed_ms": 85,
+      "db_hits": 12000,
+      "cache_hits": 300
+    },
+    "created_at": "2026-01-11T23:55:00-05:00"
+  },
+  "links": [],
+  "signatures": [
+    {
+      "alg": "ed25519",
+      "kid": "kid:alice",
+      "sig": "ZGVtb19zaWduYXR1cmU=",
+      "created_at": "2026-01-11T23:55:00-05:00"
+    }
+  ]
+}

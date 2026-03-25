@@ -1,0 +1,49 @@
+{
+  "v": "0",
+  "frame_type": "Prove",
+  "frame_kind": "Cairn.Result",
+  "id": "4P9ZB5S4DVF3V4ZVRNQTBNFT54",
+  "ts": "2026-01-11T23:55:00-05:00",
+  "actor": {
+    "kind": "human",
+    "id": "human:alice",
+    "kid": "kid:alice"
+  },
+  "context": {
+    "neighborhood": "nh:alpha",
+    "project": "proj:demo",
+    "branch": "main",
+    "topic": "topic://nh:alpha/cairn"
+  },
+  "policy": {
+    "policy_id": "pol:cairn-default",
+    "policy_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "purpose": "investigation"
+  },
+  "payload_schema": "cairn/result.v0.jsonschema.json",
+  "payload": {
+    "line_id": "cl:demo-1",
+    "step_id": "cs:demo-0",
+    "frontier": [
+      "node:x1",
+      "node:x2"
+    ],
+    "supporting_refs": [
+      "frame://cairn_step_demo",
+      "query://neo4j/q1"
+    ],
+    "computed_at": "2026-01-11T23:55:00-05:00",
+    "warnings": [
+      "cap_hit=true; frontier truncated to K"
+    ]
+  },
+  "links": [],
+  "signatures": [
+    {
+      "alg": "ed25519",
+      "kid": "kid:alice",
+      "sig": "ZGVtb19zaWduYXR1cmU=",
+      "created_at": "2026-01-11T23:55:00-05:00"
+    }
+  ]
+}

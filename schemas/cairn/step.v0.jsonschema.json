@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/step.v0.jsonschema.json",
+  "title": "Cairn.Step v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "step_id",
+    "line_id",
+    "index",
+    "opcode",
+    "args",
+    "in_context_id",
+    "out_context_id",
+    "metrics",
+    "created_at"
+  ],
+  "properties": {
+    "step_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "line_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "opcode": {
+      "type": "string",
+      "enum": [
+        "expand",
+        "optional_expand",
+        "sequence_expand",
+        "filter",
+        "rank",
+        "dedup",
+        "cap",
+        "materialize",
+        "commit_view"
+      ]
+    },
+    "args": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dir": {
+          "type": "string",
+          "enum": [
+            "out",
+            "in",
+            "both"
+          ]
+        },
+        "max_level": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sequence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "expr"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "node_filter",
+                  "edge_filter"
+                ]
+              },
+              "expr": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "relationship_filter": {
+          "type": "string"
+        },
+        "label_filter": {
+          "type": "string"
+        },
+        "predicate_filter": {
+          "type": "string"
+        },
+        "terminators": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "end_nodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "uniqueness": {
+          "type": "string",
+          "enum": [
+            "NODE_GLOBAL",
+            "NODE_RECENT",
+            "RELATIONSHIP_GLOBAL",
+            "NONE",
+            "ENGINE_DEFAULT"
+          ]
+        },
+        "bfs": {
+          "type": "boolean"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rank_policy_id": {
+          "type": "string"
+        },
+        "cap_k": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dedup_strategy": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "canonical_equivalence"
+          ]
+        },
+        "lazy": {
+          "type": "boolean"
+        }
+      }
+    },
+    "in_context_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "out_context_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fanout",
+        "dedup_ratio",
+        "cap_hit",
+        "elapsed_ms"
+      ],
+      "properties": {
+        "fanout": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dedup_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "cap_hit": {
+          "type": "boolean"
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "db_hits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cache_hits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "materialized_bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
