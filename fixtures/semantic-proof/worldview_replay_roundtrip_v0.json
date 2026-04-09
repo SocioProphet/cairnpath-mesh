@@ -1,0 +1,15 @@
+{
+  "fixture_id": "semantic-proof:worldview-replay-roundtrip:v0",
+  "kind": "replay_materialize_roundtrip",
+  "cairn_ref": "cairn:case42:step17",
+  "worldview_id": "wv:2026-04-05:001",
+  "worldview_root": "sha256:c44bbe038a6cf60bb3aeee87c904095594758c320ed9f9bbdcfb95067f5ef29c",
+  "materialize": {
+    "handle": "materialize:case42:001",
+    "expected_status": "ok"
+  },
+  "proof_refs": [
+    "proof:wv1:incl:controls021"
+  ],
+  "notes": "Seed replay/materialize fixture only. Canonical proof schemas remain external to cairnpath-mesh."
+}
