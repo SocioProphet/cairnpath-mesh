@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/conflict-object.schema.json",
+  "title": "ConflictObject",
+  "type": "object",
+  "required": ["conflict_id", "conflict_kind", "left_refs", "right_refs"],
+  "properties": {
+    "conflict_id": { "type": "string" },
+    "conflict_kind": {
+      "type": "string",
+      "enum": ["merge_conflict", "contradiction", "ambiguity", "insufficient_overlap", "policy_barrier"]
+    },
+    "left_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "right_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "overlap_witness_ref": { "type": "string" },
+    "policy_context": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "resolution_status": {
+      "type": "string",
+      "enum": ["open", "resolved", "waived", "deferred"]
+    },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": true
+}

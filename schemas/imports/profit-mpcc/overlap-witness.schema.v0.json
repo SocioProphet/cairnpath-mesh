@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/overlap-witness.schema.json",
+  "title": "OverlapWitness",
+  "type": "object",
+  "required": ["witness_id", "left_ref", "right_ref", "overlap_kind"],
+  "properties": {
+    "witness_id": { "type": "string" },
+    "left_ref": { "type": "string" },
+    "right_ref": { "type": "string" },
+    "overlap_kind": {
+      "type": "string",
+      "enum": ["raw", "canonical", "semantic", "claim", "citation", "policy"]
+    },
+    "support_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": true
+}
