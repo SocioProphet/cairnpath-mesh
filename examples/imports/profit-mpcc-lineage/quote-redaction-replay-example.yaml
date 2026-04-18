@@ -1,0 +1,22 @@
+quote_artifact:
+  quote_id: quote-0001
+  source_refs:
+    - transcript:session-0001:span-14-22
+  quote_mode: normalized
+  normalization_regime: utf8-nfkc-whitespace-v1
+  provenance_links:
+    - source: transcript:session-0001:span-14-22
+
+redaction_record:
+  redaction_id: redact-0001
+  source_ref: transcript:session-0001:span-18-19
+  policy_basis:
+    - privacy/minimize-sensitive-fragment
+  redacted_fields:
+    - quoted_content.partial_span
+  provenance_links:
+    - source: transcript:session-0001:span-18-19
+
+replay_note: >-
+  Example showing that quote provenance remains stable under replay while redaction
+  records preserve the fact of source existence and policy basis.

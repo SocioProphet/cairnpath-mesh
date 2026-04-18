@@ -1,0 +1,14 @@
+conflict_id: conflict-0001
+conflict_kind: contradiction
+left_refs:
+  - branch-a:claim-17
+right_refs:
+  - branch-b:claim-04
+overlap_witness_ref: witness-0003
+policy_context:
+  visibility: shared
+  merge_mode: semantic
+resolution_status: open
+notes: >-
+  Example contradiction where two local sections cannot be jointly maintained under
+  the current semantic and policy rules.

@@ -1,0 +1,17 @@
+rewrite_log_id: rewrite-log-0001
+source_branch_ref: branch:analysis-a
+target_branch_ref: branch:analysis-a-rebased
+base_context_ref: context:topic-risk-policy-v2
+rewrite_kind: rebase
+entries:
+  - source_ref: event:evt_101
+    rewritten_ref: event:evt_101r
+    lossiness: exact
+    notes: canonical field alignment only
+  - source_ref: summary:sum_009
+    rewritten_ref: summary:sum_009r
+    lossiness: policy_constrained
+    notes: redacted one span under updated visibility policy
+policy_basis:
+  - policy/visibility/shared-v2
+created_at: 2026-04-15T16:20:00Z
