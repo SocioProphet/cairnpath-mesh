@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/cairn.v1.jsonschema.json",
+  "title": "Cairn v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "cairn_id",
+    "line_id",
+    "opcode",
+    "op_name",
+    "args",
+    "identity_mode",
+    "uniqueness_mode",
+    "in_set_ref",
+    "out_set_ref",
+    "graph_snapshot_ref",
+    "created_at"
+  ],
+  "properties": {
+    "cairn_id": { "type": "string", "minLength": 1 },
+    "line_id": { "type": "string", "minLength": 1 },
+    "parent_cairn_id": { "type": ["string", "null"] },
+    "replaces_cairn_id": { "type": ["string", "null"] },
+    "step_id": { "type": ["string", "null"] },
+    "in_context_id": { "type": ["string", "null"] },
+    "out_context_id": { "type": ["string", "null"] },
+    "result_id": { "type": ["string", "null"] },
+    "opcode": { "type": "integer", "minimum": 0 },
+    "op_name": {
+      "type": "string",
+      "enum": [
+        "seed",
+        "expand",
+        "optional_expand",
+        "sequence_expand",
+        "filter",
+        "rank",
+        "dedup",
+        "cap",
+        "materialize",
+        "commit_view",
+        "stack_cairn"
+      ]
+    },
+    "args_schema": { "type": "string" },
+    "args": { "type": "object" },
+    "identity_mode": {
+      "type": "string",
+      "enum": ["business_key", "engine_local_snapshot"]
+    },
+    "uniqueness_mode": {
+      "type": "string",
+      "enum": [
+        "NODE_GLOBAL",
+        "NODE_LEVEL",
+        "NODE_PATH",
+        "RELATIONSHIP_PATH",
+        "NODE_RECENT",
+        "RELATIONSHIP_GLOBAL",
+        "NONE",
+        "ENGINE_DEFAULT"
+      ]
+    },
+    "frontier_cap": { "type": "integer", "minimum": 1 },
+    "unsafe_unbounded": { "type": "boolean", "default": false },
+    "in_set_ref": { "$ref": "set_ref.v1.jsonschema.json" },
+    "out_set_ref": { "$ref": "set_ref.v1.jsonschema.json" },
+    "bindings_delta": { "type": ["object", "null"] },
+    "materialization": { "type": ["object", "null"] },
+    "graph_snapshot_ref": { "type": "string", "minLength": 1 },
+    "cost": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "fanout": { "type": "integer", "minimum": 0 },
+        "dedup_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+        "cap_hit": { "type": "boolean" },
+        "elapsed_ms": { "type": "integer", "minimum": 0 },
+        "db_hits": { "type": "integer", "minimum": 0 },
+        "cache_hits": { "type": "integer", "minimum": 0 },
+        "materialized_bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "cairnface": { "type": ["string", "null"] },
+    "cairn_weight": {
+      "type": "string",
+      "enum": ["routine", "notable", "critical", "evidentiary"],
+      "default": "routine"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "policy_tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "inscription": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "canonical_json_profile": {
+          "type": "string",
+          "enum": ["jcs.rfc8785"]
+        },
+        "hash_alg": { "type": "string", "enum": ["sha256"] },
+        "excluded_fields": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "jcs_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "jcs_ref": { "type": "string" }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "op_name": {
+            "enum": ["expand", "optional_expand", "sequence_expand"]
+          }
+        },
+        "required": ["op_name"]
+      },
+      "then": {
+        "anyOf": [
+          { "required": ["frontier_cap"] },
+          {
+            "properties": { "unsafe_unbounded": { "const": true } },
+            "required": ["unsafe_unbounded"]
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": { "identity_mode": { "const": "engine_local_snapshot" } },
+        "required": ["identity_mode"]
+      },
+      "then": { "required": ["graph_snapshot_ref"] }
+    }
+  ]
+}
