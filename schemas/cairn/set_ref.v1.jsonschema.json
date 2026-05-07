@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/set_ref.v1.jsonschema.json",
+  "title": "Cairn.SetRef v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "hash_alg", "value", "count"],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": ["sha256", "merkle"]
+    },
+    "hash_alg": {
+      "type": "string",
+      "enum": ["sha256"]
+    },
+    "value": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "order": {
+      "type": "string",
+      "enum": ["lexicographic", "rank_then_lex", "engine_defined"]
+    },
+    "members_ref": {
+      "type": "string"
+    },
+    "chunking": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chunk_size": { "type": "integer", "minimum": 1 },
+        "leaf_domain": {
+          "type": "string",
+          "default": "cairn.set.leaf.v1"
+        },
+        "node_domain": {
+          "type": "string",
+          "default": "cairn.set.node.v1"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "kind": { "const": "merkle" } },
+        "required": ["kind"]
+      },
+      "then": { "required": ["chunking"] }
+    }
+  ]
+}
