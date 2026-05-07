@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/log.v1.jsonschema.json",
+  "title": "Cairn.Log v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["line_id", "head_cairn_id", "events", "created_at", "updated_at"],
+  "properties": {
+    "line_id": { "type": "string", "minLength": 1 },
+    "head_cairn_id": { "type": "string", "minLength": 1 },
+    "events": {
+      "type": "array",
+      "items": { "$ref": "event.v1.jsonschema.json" }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "running", "complete", "failed", "branched", "rebased"]
+    }
+  }
+}
