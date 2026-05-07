@@ -4,260 +4,84 @@
   "title": "TriRPC Frame Envelope v0",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "v",
-    "frame_type",
-    "frame_kind",
-    "id",
-    "ts",
-    "actor",
-    "policy",
-    "payload_schema",
-    "payload",
-    "links",
-    "signatures"
-  ],
-  "properties": {
-    "v": {
-      "type": "string",
-      "enum": [
-        "0"
-      ]
-    },
-    "frame_type": {
-      "type": "string",
-      "enum": [
-        "Offer",
-        "Request",
-        "Execute",
-        "Prove",
-        "Commit",
-        "Reward",
-        "Ops",
-        "Governance",
-        "Identity",
-        "Discovery",
-        "Capability",
-        "Packet",
-        "Policy"
-      ]
-    },
-    "frame_kind": {
-      "type": "string",
-      "pattern": "^[A-Za-z0-9]+(\\.[A-Za-z0-9_-]+)+$"
-    },
-    "id": {
-      "$ref": "#/$defs/ulid"
-    },
-    "ts": {
-      "$ref": "#/$defs/iso8601"
-    },
+  "$defs": {
+    "ulid": {"type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"},
+    "iso8601": {"type": "string", "format": "date-time"},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "kid": {"type": "string", "minLength": 3},
+    "purpose": {"type": "string", "minLength": 1},
     "actor": {
-      "$ref": "#/$defs/actor"
-    },
-    "context": {
-      "$ref": "#/$defs/context"
-    },
-    "policy": {
-      "$ref": "#/$defs/policy_ref"
-    },
-    "payload_schema": {
-      "type": "string",
-      "minLength": 1
-    },
-    "payload": {
-      "type": [
-        "object",
-        "array",
-        "string",
-        "number",
-        "boolean",
-        "null"
-      ]
-    },
-    "links": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/link"
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id", "kid"],
+      "properties": {
+        "kind": {"type": "string", "enum": ["human", "agent", "node", "service"]},
+        "id": {"type": "string", "minLength": 1},
+        "kid": {"$ref": "#/$defs/kid"},
+        "display_name": {"type": "string"}
       }
     },
-    "idempotency_key": {
-      "type": "string",
-      "minLength": 1
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alg", "kid", "sig"],
+      "properties": {
+        "alg": {"type": "string", "enum": ["ed25519", "secp256k1", "rsa-pss-sha256"]},
+        "kid": {"$ref": "#/$defs/kid"},
+        "sig": {"type": "string", "minLength": 10},
+        "created_at": {"$ref": "#/$defs/iso8601"}
+      }
     },
-    "replay_nonce": {
-      "type": "string",
-      "minLength": 1
+    "policy_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "policy_hash", "purpose"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "policy_hash": {"$ref": "#/$defs/sha256"},
+        "purpose": {"$ref": "#/$defs/purpose"},
+        "decision_id": {"type": "string"}
+      }
     },
-    "signatures": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/signature"
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "neighborhood": {"type": "string", "minLength": 1},
+        "project": {"type": "string", "minLength": 1},
+        "workspace": {"type": "string", "minLength": 1},
+        "branch": {"type": "string", "minLength": 1},
+        "topic": {"type": "string", "minLength": 1},
+        "trace_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rel", "ref"],
+      "properties": {
+        "rel": {"type": "string", "minLength": 1},
+        "ref": {"type": "string", "minLength": 1},
+        "hash": {"$ref": "#/$defs/sha256"},
+        "media_type": {"type": "string"}
       }
     }
   },
-  "allOf": [
-    {
-      "$defs": {
-        "ulid": {
-          "type": "string",
-          "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
-        },
-        "iso8601": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "sha256": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
-        },
-        "kid": {
-          "type": "string",
-          "minLength": 3
-        },
-        "purpose": {
-          "type": "string",
-          "minLength": 1
-        },
-        "actor": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "kind",
-            "id",
-            "kid"
-          ],
-          "properties": {
-            "kind": {
-              "type": "string",
-              "enum": [
-                "human",
-                "agent",
-                "node",
-                "service"
-              ]
-            },
-            "id": {
-              "type": "string",
-              "minLength": 1
-            },
-            "kid": {
-              "$ref": "#/$defs/kid"
-            },
-            "display_name": {
-              "type": "string"
-            }
-          }
-        },
-        "signature": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "alg",
-            "kid",
-            "sig"
-          ],
-          "properties": {
-            "alg": {
-              "type": "string",
-              "enum": [
-                "ed25519",
-                "secp256k1",
-                "rsa-pss-sha256"
-              ]
-            },
-            "kid": {
-              "$ref": "#/$defs/kid"
-            },
-            "sig": {
-              "type": "string",
-              "minLength": 10
-            },
-            "created_at": {
-              "$ref": "#/$defs/iso8601"
-            }
-          }
-        },
-        "policy_ref": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "policy_id",
-            "policy_hash",
-            "purpose"
-          ],
-          "properties": {
-            "policy_id": {
-              "type": "string",
-              "minLength": 1
-            },
-            "policy_hash": {
-              "$ref": "#/$defs/sha256"
-            },
-            "purpose": {
-              "$ref": "#/$defs/purpose"
-            },
-            "decision_id": {
-              "type": "string"
-            }
-          }
-        },
-        "context": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "neighborhood": {
-              "type": "string",
-              "minLength": 1
-            },
-            "project": {
-              "type": "string",
-              "minLength": 1
-            },
-            "workspace": {
-              "type": "string",
-              "minLength": 1
-            },
-            "branch": {
-              "type": "string",
-              "minLength": 1
-            },
-            "topic": {
-              "type": "string",
-              "minLength": 1
-            },
-            "trace_id": {
-              "type": "string",
-              "minLength": 1
-            }
-          }
-        },
-        "link": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "rel",
-            "ref"
-          ],
-          "properties": {
-            "rel": {
-              "type": "string",
-              "minLength": 1
-            },
-            "ref": {
-              "type": "string",
-              "minLength": 1
-            },
-            "hash": {
-              "$ref": "#/$defs/sha256"
-            },
-            "media_type": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    }
-  ]
+  "required": ["v", "frame_type", "frame_kind", "id", "ts", "actor", "policy", "payload_schema", "payload", "links", "signatures"],
+  "properties": {
+    "v": {"type": "string", "enum": ["0"]},
+    "frame_type": {"type": "string", "enum": ["Offer", "Request", "Execute", "Prove", "Commit", "Reward", "Ops", "Governance", "Identity", "Discovery", "Capability", "Packet", "Policy"]},
+    "frame_kind": {"type": "string", "pattern": "^[A-Za-z0-9]+(\\.[A-Za-z0-9_-]+)+$"},
+    "id": {"$ref": "#/$defs/ulid"},
+    "ts": {"$ref": "#/$defs/iso8601"},
+    "actor": {"$ref": "#/$defs/actor"},
+    "context": {"$ref": "#/$defs/context"},
+    "policy": {"$ref": "#/$defs/policy_ref"},
+    "payload_schema": {"type": "string", "minLength": 1},
+    "payload": {"type": ["object", "array", "string", "number", "boolean", "null"]},
+    "links": {"type": "array", "items": {"$ref": "#/$defs/link"}},
+    "idempotency_key": {"type": "string", "minLength": 1},
+    "replay_nonce": {"type": "string", "minLength": 1},
+    "signatures": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/signature"}}
+  }
 }
