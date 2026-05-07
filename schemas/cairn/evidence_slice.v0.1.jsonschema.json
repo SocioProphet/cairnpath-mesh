@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/evidence_slice.v0.1.jsonschema.json",
+  "title": "Cairn.EvidenceSlice v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "slice_id",
+    "run_id",
+    "source",
+    "events_hash",
+    "steptrace_root_hash",
+    "selected_event_ids",
+    "selected_edges",
+    "assumptions",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "0.1" },
+    "slice_id": { "type": "string", "minLength": 1 },
+    "run_id": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_ir_version", "dataset_ref"],
+      "properties": {
+        "event_ir_version": { "type": "string", "minLength": 1 },
+        "dataset_ref": { "type": "string", "minLength": 1 },
+        "cairnline_id": { "type": "string" },
+        "claim_spec_id": { "type": "string" }
+      }
+    },
+    "events_hash": { "$ref": "#/$defs/sha256" },
+    "steptrace_root_hash": { "$ref": "#/$defs/sha256" },
+    "selected_event_ids": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "selected_edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from", "rel", "to"],
+        "properties": {
+          "from": { "type": "string", "minLength": 1 },
+          "rel": { "type": "string", "minLength": 1 },
+          "to": { "type": "string", "minLength": 1 },
+          "evidence_event_id": { "type": "string" }
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "statement"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "statement": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "enum": ["collector_completeness", "clock", "scope", "normalization", "policy", "other"] }
+        }
+      }
+    },
+    "materialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string", "enum": ["node_only", "path_evidence"] },
+        "path_evidence_m": { "type": "integer", "minimum": 0 },
+        "evidence_dag_hash": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}
