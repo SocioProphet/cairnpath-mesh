@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/capabilities.v1.jsonschema.json",
+  "title": "Cairn.ExecutorCapabilities v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "executor_name",
+    "executor_version",
+    "backend_kind",
+    "supported_opcodes",
+    "enforces_frontier_cap"
+  ],
+  "properties": {
+    "executor_name": { "type": "string", "minLength": 1 },
+    "executor_version": { "type": "string", "minLength": 1 },
+    "backend_kind": {
+      "type": "string",
+      "enum": ["neo4j", "atomspace", "terminusdb", "rdf", "custom"]
+    },
+    "backend_version": { "type": "string" },
+    "supported_opcodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "supported_expr_langs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "enforces_frontier_cap": { "type": "boolean" },
+    "enforces_uniqueness": { "type": "boolean" },
+    "supports_sequence_expand": { "type": "boolean" },
+    "supports_setref_sha256": { "type": "boolean" },
+    "supports_setref_merkle": { "type": "boolean" },
+    "supports_graph_snapshot_ref": { "type": "boolean" },
+    "supported_identity_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["business_key", "engine_local_snapshot"]
+      }
+    },
+    "max_frontier_cap": { "type": "integer", "minimum": 0 },
+    "max_hops": { "type": "integer", "minimum": 0 },
+    "max_level": { "type": "integer", "minimum": 0 },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
