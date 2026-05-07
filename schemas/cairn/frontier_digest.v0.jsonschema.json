@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/frontier_digest.v0.jsonschema.json",
+  "title": "Cairn.FrontierDigest v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "algorithm",
+    "ordered",
+    "count",
+    "digest"
+  ],
+  "properties": {
+    "algorithm": {
+      "type": "string",
+      "enum": [
+        "sha256"
+      ]
+    },
+    "ordered": {
+      "type": "boolean",
+      "description": "True when digest input preserves ordered frontier sequence; false only for explicitly order-insensitive comparisons."
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "canonicalization": {
+      "type": "string",
+      "enum": [
+        "json-sort-keys-nfc",
+        "entity-ref-canonical-lines"
+      ],
+      "default": "json-sort-keys-nfc"
+    },
+    "includes_scores": {
+      "type": "boolean",
+      "default": false
+    },
+    "includes_snapshot_ref": {
+      "type": "boolean",
+      "default": false
+    },
+    "snapshot_ref": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
