@@ -30,7 +30,7 @@ CairnShare shares *live analyses* inside a sandbox with explicit scope and proje
 2) Submit a run: `argo -n cairnshare submit argo/workflows/run.yaml -p engine=atomspace -p repo_url=... -p revision=... -p adapter_image=...`
 
 ## Status
-This is a **DataWalk-purged, open-source-first** remediation of earlier scaffolding. Next implementation step is the AtomSpace adapter.
+This is a **vendor-purged, open-source-first** remediation of the earlier link-analysis shareability scaffolding. Next implementation step is the AtomSpace adapter.
 
 ## Spec
 - Normative rules: `spec/NORMATIVE.md`
