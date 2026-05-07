@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/claim_spec.v0.1.jsonschema.json",
+  "title": "Cairn.ClaimSpec v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "claim_id",
+    "claim_kind",
+    "statement",
+    "evidence_slice_id",
+    "required_domains",
+    "budgets",
+    "result_contract",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "0.1" },
+    "claim_id": { "type": "string", "minLength": 1 },
+    "claim_kind": { "type": "string", "enum": ["hsm_non_escape", "secure_boot_order", "mount_visibility", "capability_revocation", "custom"] },
+    "statement": { "type": "string", "minLength": 1 },
+    "evidence_slice_id": { "type": "string", "minLength": 1 },
+    "assumption_refs": { "type": "array", "items": { "type": "string" } },
+    "required_domains": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["interval", "sign", "octagon", "polyhedra", "nnc_polyhedra", "congruence", "grid", "sharing", "linearity", "escape"] },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "preferred_domain_product": { "type": "string" },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_iterations", "max_widenings", "max_duration_ms"],
+      "properties": {
+        "max_iterations": { "type": "integer", "minimum": 1 },
+        "max_widenings": { "type": "integer", "minimum": 0 },
+        "max_duration_ms": { "type": "integer", "minimum": 1 },
+        "max_steps": { "type": "integer", "minimum": 0 },
+        "precision_delta_max": { "type": "number", "minimum": 0 }
+      }
+    },
+    "widen_schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string", "enum": ["fixed", "base_e", "custom"] },
+        "base": { "type": "number", "exclusiveMinimum": 1 },
+        "ticks": { "type": "array", "items": { "type": "integer", "minimum": 0 } }
+      }
+    },
+    "result_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["success_status", "failure_status", "witness_kind", "counterexample_kind"],
+      "properties": {
+        "success_status": { "type": "string", "enum": ["PROVED"] },
+        "failure_status": { "type": "string", "enum": ["VIOLATION", "UNKNOWN"] },
+        "witness_kind": { "type": "string", "enum": ["NoEscape", "OrderingWitness", "VisibilityWitness", "RevocationWitness", "CustomWitness"] },
+        "counterexample_kind": { "type": "string", "enum": ["EventPath", "ConstraintModel", "ScopeLeak", "AliasLeak", "CustomCounterexample"] }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}
