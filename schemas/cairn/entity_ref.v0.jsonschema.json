@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/entity_ref.v0.jsonschema.json",
+  "title": "Cairn.EntityRef v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "namespace",
+    "kind",
+    "key",
+    "canonical"
+  ],
+  "properties": {
+    "namespace": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical": {
+      "type": "string",
+      "minLength": 3,
+      "description": "NFC-normalized canonical identity string used for ordering, deduplication, hashing, and conformance."
+    },
+    "backend": {
+      "type": "string",
+      "enum": [
+        "neo4j",
+        "atomspace",
+        "terminusdb",
+        "rdf",
+        "custom"
+      ]
+    },
+    "backend_local_id": {
+      "type": "string",
+      "description": "Backend-local id, handle, element id, or uuid. Not sufficient for cross-backend conformance by itself."
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "equivalence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}
