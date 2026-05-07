@@ -79,24 +79,12 @@
     }
   ],
   "$defs": {
-    "dir": {
-      "type": "string",
-      "enum": ["out", "in", "both"]
-    },
+    "dir": { "type": "string", "enum": ["out", "in", "both"] },
     "uniqueness": {
       "type": "string",
-      "enum": [
-        "NODE_GLOBAL",
-        "NODE_RECENT",
-        "RELATIONSHIP_GLOBAL",
-        "NONE",
-        "ENGINE_DEFAULT"
-      ]
+      "enum": ["NODE_GLOBAL", "NODE_RECENT", "RELATIONSHIP_GLOBAL", "NONE", "ENGINE_DEFAULT"]
     },
-    "dedup_strategy": {
-      "type": "string",
-      "enum": ["identity", "canonical_equivalence"]
-    },
+    "dedup_strategy": { "type": "string", "enum": ["identity", "canonical_equivalence"] },
     "rank_policy": {
       "type": "object",
       "additionalProperties": false,
@@ -119,9 +107,10 @@
         "unsafe_reason": { "type": "string" }
       }
     },
-    "edge_node_filters": {
+    "expand_args": {
       "type": "object",
       "additionalProperties": false,
+      "required": ["frontier_policy"],
       "properties": {
         "dir": { "$ref": "#/$defs/dir" },
         "max_level": { "type": "integer", "minimum": 0 },
@@ -133,48 +122,30 @@
         "uniqueness": { "$ref": "#/$defs/uniqueness" },
         "bfs": { "type": "boolean" },
         "limit": { "type": "integer", "minimum": 0 },
-        "lazy": { "type": "boolean" }
+        "lazy": { "type": "boolean" },
+        "frontier_policy": { "$ref": "#/$defs/frontier_policy" }
       }
     },
-    "expand_args": {
-      "allOf": [
-        { "$ref": "#/$defs/edge_node_filters" },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["frontier_policy"],
-          "properties": {
-            "dir": { "$ref": "#/$defs/dir" },
-            "max_level": { "type": "integer", "minimum": 0 },
-            "relationship_filter": { "type": "string" },
-            "label_filter": { "type": "string" },
-            "predicate_filter": { "type": "string" },
-            "terminators": { "type": "array", "items": { "type": "string" } },
-            "end_nodes": { "type": "array", "items": { "type": "string" } },
-            "uniqueness": { "$ref": "#/$defs/uniqueness" },
-            "bfs": { "type": "boolean" },
-            "limit": { "type": "integer", "minimum": 0 },
-            "lazy": { "type": "boolean" },
-            "frontier_policy": { "$ref": "#/$defs/frontier_policy" }
-          }
-        }
-      ]
-    },
     "optional_expand_args": {
-      "allOf": [
-        { "$ref": "#/$defs/expand_args" },
-        {
-          "type": "object",
-          "required": ["optional_mode"],
-          "properties": {
-            "optional_mode": {
-              "type": "string",
-              "enum": ["keep_frontier", "empty_frontier", "null_binding"]
-            },
-            "attachments_replay_critical": { "type": "boolean", "default": false }
-          }
-        }
-      ]
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frontier_policy", "optional_mode"],
+      "properties": {
+        "dir": { "$ref": "#/$defs/dir" },
+        "max_level": { "type": "integer", "minimum": 0 },
+        "relationship_filter": { "type": "string" },
+        "label_filter": { "type": "string" },
+        "predicate_filter": { "type": "string" },
+        "terminators": { "type": "array", "items": { "type": "string" } },
+        "end_nodes": { "type": "array", "items": { "type": "string" } },
+        "uniqueness": { "$ref": "#/$defs/uniqueness" },
+        "bfs": { "type": "boolean" },
+        "limit": { "type": "integer", "minimum": 0 },
+        "lazy": { "type": "boolean" },
+        "frontier_policy": { "$ref": "#/$defs/frontier_policy" },
+        "optional_mode": { "type": "string", "enum": ["keep_frontier", "empty_frontier", "null_binding"] },
+        "attachments_replay_critical": { "type": "boolean", "default": false }
+      }
     },
     "sequence_step": {
       "type": "object",
@@ -214,25 +185,19 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["rank"],
-      "properties": {
-        "rank": { "$ref": "#/$defs/rank_policy" }
-      }
+      "properties": { "rank": { "$ref": "#/$defs/rank_policy" } }
     },
     "dedup_args": {
       "type": "object",
       "additionalProperties": false,
       "required": ["dedup_strategy"],
-      "properties": {
-        "dedup_strategy": { "$ref": "#/$defs/dedup_strategy" }
-      }
+      "properties": { "dedup_strategy": { "$ref": "#/$defs/dedup_strategy" } }
     },
     "cap_args": {
       "type": "object",
       "additionalProperties": false,
       "required": ["cap_k"],
-      "properties": {
-        "cap_k": { "type": "integer", "minimum": 0 }
-      }
+      "properties": { "cap_k": { "type": "integer", "minimum": 0 } }
     },
     "materialize_args": {
       "type": "object",
