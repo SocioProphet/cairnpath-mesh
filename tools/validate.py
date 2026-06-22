@@ -34,15 +34,32 @@ def sha256_hex(b: bytes) -> str:
 def load(p: Path):
     return json.loads(p.read_text(encoding="utf-8"))
 
+def load_schema_store() -> dict[str, dict]:
+    store: dict[str, dict] = {}
+    for p in sorted(SCHEMAS.rglob("*.jsonschema.json")):
+        schema = load(p)
+        sid = schema.get("$id")
+        if sid:
+            store[sid] = schema
+        store[str(p.relative_to(SCHEMAS))] = schema
+    return store
+
+def validate_with_store(instance, schema, store: dict[str, dict]) -> None:
+    cls = jsonschema.validators.validator_for(schema)
+    cls.check_schema(schema)
+    resolver = jsonschema.RefResolver.from_schema(schema, store=store)
+    cls(schema, resolver=resolver).validate(instance)
+
 def main() -> int:
+    store = load_schema_store()
     env_schema = load(SCHEMAS/"envelope"/"frame.v0.jsonschema.json")
     ok = True
     for f in sorted(FIXTURES.glob("*.frame.json")):
         try:
             frame = load(f)
-            jsonschema.validate(frame, env_schema)
+            validate_with_store(frame, env_schema, store)
             ps = load(SCHEMAS / frame["payload_schema"])
-            jsonschema.validate(frame["payload"], ps)
+            validate_with_store(frame["payload"], ps, store)
             frame_wo = dict(frame)
             frame_wo.pop("signatures", None)
             h = sha256_hex(canonical_bytes(frame_wo))

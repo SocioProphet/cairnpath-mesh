@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/cairn/step_trace.v0.jsonschema.json",
+  "title": "Cairn.StepTrace v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "trace_id",
+    "line_id",
+    "step_id",
+    "opcode",
+    "frontier_count_in",
+    "expanded_count_raw",
+    "dedup_count",
+    "frontier_count_out",
+    "cap_hit",
+    "frontier_digest",
+    "elapsed_ms",
+    "created_at"
+  ],
+  "properties": {
+    "trace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "line_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "step_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "opcode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "frontier_count_in": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expanded_count_raw": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "dedup_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "frontier_count_out": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cap_hit": {
+      "type": "boolean"
+    },
+    "frontier_digest": {
+      "$ref": "frontier_digest.v0.jsonschema.json"
+    },
+    "rank_policy_id": {
+      "type": "string"
+    },
+    "rank_policy_version": {
+      "type": "string"
+    },
+    "dedup_strategy": {
+      "type": "string",
+      "enum": [
+        "identity",
+        "canonical_equivalence"
+      ]
+    },
+    "optional_attachment_digest": {
+      "$ref": "frontier_digest.v0.jsonschema.json"
+    },
+    "backend": {
+      "type": "string"
+    },
+    "backend_adapter_version": {
+      "type": "string"
+    },
+    "backend_query_fingerprint": {
+      "type": "string"
+    },
+    "policy_id": {
+      "type": "string"
+    },
+    "decision_id": {
+      "type": "string"
+    },
+    "replay_mode": {
+      "type": "string",
+      "enum": [
+        "deterministic",
+        "best_effort"
+      ]
+    },
+    "elapsed_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "db_hits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cache_hits": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "materialized_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
